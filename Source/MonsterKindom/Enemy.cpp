@@ -123,7 +123,18 @@ void AEnemy::CombatSphereOnEndOverlap(UPrimitiveComponent* OverlappedComp, AActo
 void AEnemy::AttackHitBoxOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, 
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	
+	if (CanDetecDamageCollision)
+	{
+		APlayerCharacter* MyChar = Cast<APlayerCharacter>(OtherActor);
+
+		if (MyChar)
+		{
+			CanDetecDamageCollision = false; //
+
+			MyChar->ApplyDamage();
+		
+		}
+	}
 }
 
 void AEnemy::MoveToTarget()
@@ -163,8 +174,7 @@ void AEnemy::Attack()
 	{
 		AnimInstance->Montage_Play(CombatMontage, 1.15f);
 		AnimInstance->Montage_JumpToSection(TEXT("Attack"), CombatMontage);
-		UE_LOG(LogTemp, Error, TEXT("asd"));
-	}
+	}	
 }
 
 void AEnemy::AttackEnded()
@@ -188,5 +198,24 @@ void AEnemy::AttackEnded()
 	{
 		bTargetInAttackRange = false;
 	}
+}
+
+void AEnemy::ApplyDamage()
+{
+	Health -= 20.0f;
+	if (Health <= 0.0f)
+	{
+		if (AI_Controller)
+			AI_Controller->StopMovement();
+		IsAlive = false;
+
+		GetWorldTimerManager().SetTimer(AttackTimer, this, &AEnemy::DisposeEnemy,2.0f);
+	}
+
+}
+
+void AEnemy::DisposeEnemy()
+{
+	Destroy();
 }
 

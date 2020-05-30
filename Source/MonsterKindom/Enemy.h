@@ -92,4 +92,10 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		UAnimMontage* CombatMontage;
+
+	float Health = 100.0f;
+
+	void ApplyDamage();
+	void DisposeEnemy();
+
 };

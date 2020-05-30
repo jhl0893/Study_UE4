@@ -1,5 +1,5 @@
 # Study_UE4_C-
-20_5_28 ~ 20_5_30 MonsterKindom
+MonsterKindom
 ===============================
 Link: http://learn.awesometuts.com/courses/    
 *Create A Monster Game With C++ And Unreal Engine 4참고
